@@ -179,6 +179,15 @@
 
         // Attach the function to the button click event
         document.getElementById('find-cookies').addEventListener('click', generateRandomGirl);
+
+        let clickCount = 0;  // Declare the counter at the beginning
+
+        document.getElementById('find-cookies').addEventListener('click', function() {
+        clickCount++;  // Increment the counter each time the button is clicked
+        console.log(`Button clicked ${clickCount} times`);  // Log the count in the console
+        generateRandomGirl();  // Call the function to generate a random girl
+        });
+
     </script>
 </body>
 </html>
