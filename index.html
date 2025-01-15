@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Cookies</title>
+    <style>
+        /* Basic Reset */
+        body, h1, p, button, div {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: white;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Trefoil Sans', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center; /* Centers content horizontally */
+            align-items: center;     /* Centers content vertically */
+            min-height: 100vh;       /* Ensures the body takes full viewport height */
+        }
+
+        /* Container that holds everything */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center everything inside the container */
+        }
+
+        /* Heading Styling */
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'GirlScout-DisplayLight';
+            src: url('GirlScout-DisplayLight.woff2') format('woff2'),
+                 url('GirlScout-DisplayLight.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Button Styling */
+        @font-face {
+            font-family: 'GirlScout-DisplayLight';
+            src: url('GirlScout-DisplayLight.woff2') format('woff2'),
+                 url('GirlScout-DisplayLight.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        #find-cookies {
+            background-color: #fd329e;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.75rem;
+            width: 275.55px;
+            height: 60px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'GirlScout-DisplayLight', sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center; /* Ensures text is centered */
+            align-items: center;     /* Ensures text is vertically centered */
+        }
+
+        #find-cookies:hover {
+            background-color: #c92d80;
+        }
+
+        /* Results Styling */
+        #results {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .result {
+            padding: 8px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            max-width: 500px;
+            margin: 5px auto;
+        }
+
+        .result:nth-child(odd) {
+            background-color: #d5f267;
+            color: black;
+        }
+
+        .result:nth-child(even) {
+            background-color: white;
+            color: black;
+        }
+
+        /* Styling Links */
+        .result a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .result a:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discover a Girl Scout's Storefront!</h1>
+        <button id="find-cookies">SURPRISE ME</button>
+        <div id="results"></div> <!-- This is where results will appear -->
+    </div>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Function to fetch and process the CSV file
+        async function fetchCookieData() {
+            const response = await fetch('https://raw.githubusercontent.com/barbiegirlscout/ilovecookies/main/ilovecookiesdata01.csv');
+            const data = await response.text();
+
+            // Parse the CSV into rows
+            const rows = data.split('\n').map(row => row.split(','));
+
+            // Extract the header and data rows
+            const headers = rows[0];
+            const dataRows = rows.slice(1).filter(row => row.length > 1); // Remove empty rows
+
+            return { headers, dataRows };
+        }
+
+        // Function to generate random girl and display her information
+        async function generateRandomGirl() {
+            const { dataRows } = await fetchCookieData();
+
+            // Randomly pick one girl
+            const randomIndex = Math.floor(Math.random() * dataRows.length);
+            const girl = dataRows[randomIndex];
+
+            // Clear previous results
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            const name = girl[0]; // Column A is "Girl First Name"
+            const siteID = girl[1]; // Column B is "Site URLID"
+            const url
+
+            // Create a result element with the girl's name and a hyperlink to the Digital Cookie Storefront
+            const resultElement = document.createElement('div');
+            resultElement.classList.add('result');
+            resultElement.innerHTML = `<strong><a href="${url}" target="_blank">${name}'s Digital Cookie Storefront</a></strong>`;
+
+            // Append the result to the container
+            resultsContainer.appendChild(resultElement);
+        }
+
+        // Attach the function to the button click event
+        document.getElementById('find-cookies').addEventListener('click', generateRandomGirl);
+    </script>
+</body>
+</html>
